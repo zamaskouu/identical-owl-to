@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Hudební Generátor</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+</head>
+<body>
+    <h1>AI Hudební Generátor</h1>
+    <button id="generateButton">Generovat a Přehrát Melodii</button>
+
+    <script>
+        const synth = new Tone.Synth().toDestination();
+
+        document.getElementById('generateButton').addEventListener('click', async () => {
+            const response = await fetch('/generate-melody');
+            const data = await response.json();
+            
+            const melody = data.melody;
+            let time = 0;
+            
+            melody.forEach((note, index) => {
+                synth.triggerAttackRelease(note, "8n", time);
+                time += 0.25;
+            });
+        });
+    </script>
+</body>
+</html>
